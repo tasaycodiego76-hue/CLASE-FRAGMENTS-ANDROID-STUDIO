@@ -60,14 +60,20 @@ public class PrestamoFragment extends Fragment {
                         Log.d("Resultado",jsonObject.toString());
                         try{
                             boolean success = jsonObject.getBoolean("success");
-                            String herramientas = "";
+                            String resultado = "";
 
                             if (success){
                                 //JSONARRAYRequest = solicitud / pedido
                                 //JSONArray = contenedor
                                 JSONArray listaHerramientas = jsonObject.getJSONArray("data");
 
-                                Toast.makeText(getContext(),"Existen datos", Toast.LENGTH_SHORT).show();
+                                //Ahora para terminar , iteramos (recorremos) el JSONArray
+                                for (int i = 0; i < listaHerramientas.length(); i ++){
+                                    JSONObject herramienta = listaHerramientas.getJSONObject(i);
+                                   resultado += herramienta.getString("nombre") + ",";
+                                }
+
+                                Toast.makeText(getContext(), resultado, Toast.LENGTH_LONG).show();
 
                             }
                         }catch (Exception e){
