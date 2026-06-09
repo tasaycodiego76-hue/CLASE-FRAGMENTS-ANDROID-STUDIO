@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,10 +32,11 @@ public class RecepcionFragment extends Fragment {
     EditText edtId, edtNombreH, edtMarcaH, edtDescripcionH;
     RadioButton rbtBuenoH, rbtRegularH, rbtMaloH;
     RadioButton rbtManualH, rbtElectricaH;
+    RadioGroup rgCondicionH, rgTipoH;
     RequestQueue requestQueue;
     String condicion = "", tipo = "";
 
-    private final String endPoint = "http://192.168.101.33:3000/api/herramientas/";
+    private final String endPoint = "http://192.168.18.186:3000/api/herramientas/";
 
     public RecepcionFragment() {}
 
@@ -45,21 +47,14 @@ public class RecepcionFragment extends Fragment {
     }
 
     private void seleccionarCondicion(String condicion) {
-        rbtBuenoH.setChecked(false);
-        rbtRegularH.setChecked(false);
-        rbtMaloH.setChecked(false);
-
-        if (condicion.equals("Bueno"))   { rbtBuenoH.setChecked(true); }
-        if (condicion.equals("Regular")) { rbtRegularH.setChecked(true); }
-        if (condicion.equals("Malo"))    { rbtMaloH.setChecked(true); }
+        if (condicion.equalsIgnoreCase("Bueno"))   { rgCondicionH.check(R.id.rbtBuenoH); }
+        if (condicion.equalsIgnoreCase("Regular")) { rgCondicionH.check(R.id.rbtRegularH); }
+        if (condicion.equalsIgnoreCase("Malo"))    { rgCondicionH.check(R.id.rbtMaloH); }
     }
 
     private void seleccionarTipo(String tipo) {
-        rbtManualH.setChecked(false);
-        rbtElectricaH.setChecked(false);
-
-        if (tipo.equals("Manual"))    { rbtManualH.setChecked(true); }
-        if (tipo.equals("Eléctrica")) { rbtElectricaH.setChecked(true); }
+        if (tipo.equalsIgnoreCase("Manual")) { rgTipoH.check(R.id.rbtManualH); }
+        if (tipo.equalsIgnoreCase("Eléctrica") || tipo.equalsIgnoreCase("Electrica")) { rgTipoH.check(R.id.rbtElectricaH); }
     }
 
     private void buscarHerramienta() {
@@ -81,18 +76,14 @@ public class RecepcionFragment extends Fragment {
                     public void onResponse(JSONObject jsonObject) {
                         try {
                             boolean success = jsonObject.getBoolean("success");
-
                             if (success) {
                                 JSONObject registro = jsonObject.getJSONObject("data");
-
                                 edtNombreH.setText(registro.getString("nombre"));
                                 edtMarcaH.setText(registro.getString("marca"));
                                 edtDescripcionH.setText(registro.getString("descripcion"));
-
                                 seleccionarCondicion(registro.getString("condicion"));
                                 seleccionarTipo(registro.getString("tipo"));
                             }
-
                         } catch (Exception e) {
                             Log.e("ErrorJSON", e.toString());
                         }
@@ -168,7 +159,6 @@ public class RecepcionFragment extends Fragment {
                     public void onErrorResponse(VolleyError volleyError) {
                         NetworkResponse response = volleyError.networkResponse;
                         if (response != null && response.data != null) {
-                            int statusCode     = response.statusCode;
                             String messageJSON = new String(response.data);
                             try {
                                 JSONObject jsonWS = new JSONObject(messageJSON);
@@ -180,7 +170,8 @@ public class RecepcionFragment extends Fragment {
                         }
                     }
                 }
-        );
+        ) {
+        };
 
         requestQueue.add(jsonObjectRequest);
     }
@@ -201,6 +192,9 @@ public class RecepcionFragment extends Fragment {
         rbtMaloH      = view.findViewById(R.id.rbtMaloH);
         rbtManualH    = view.findViewById(R.id.rbtManualH);
         rbtElectricaH = view.findViewById(R.id.rbtElectricaH);
+
+        rgCondicionH  = view.findViewById(R.id.rgCondicionH);
+        rgTipoH       = view.findViewById(R.id.rgTipo);
 
         btnBuscar.setOnClickListener(new View.OnClickListener() {
             @Override

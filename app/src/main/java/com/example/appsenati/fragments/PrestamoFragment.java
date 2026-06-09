@@ -39,7 +39,7 @@ public class PrestamoFragment extends Fragment {
     RadioButton rbtManual, rbtElectrica;
     String condicion = "", tipo = ""; //RadioButton
 
-    private final String URL  = "http://192.168.101.33:3000/api/herramientas/"; //EndPoint
+    private final String URL  = "http://192.168.18.186:3000/api/herramientas/"; //EndPoint
     //Constructor
     public PrestamoFragment(){
 
@@ -123,7 +123,7 @@ public class PrestamoFragment extends Fragment {
                     public void onResponse(JSONObject jsonObject) {
                         try{
                         boolean success = jsonObject.getBoolean("success");
-                        String message = jsonObject.getString("");
+                        String message = jsonObject.getString("message");
                         int id = jsonObject.getInt("id");
                             if (success){
                                 resetUI();
