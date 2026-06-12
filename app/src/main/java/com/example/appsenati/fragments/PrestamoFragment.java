@@ -39,7 +39,7 @@ public class PrestamoFragment extends Fragment {
     RadioButton rbtManual, rbtElectrica;
     String condicion = "", tipo = ""; //RadioButton
 
-    private final String URL  = "http://192.168.18.186:3000/api/herramientas/"; //EndPoint
+    private final String URL  = "http://192.168.101.33:3000/api/herramientas/"; //EndPoint
     //Constructor
     public PrestamoFragment(){
 

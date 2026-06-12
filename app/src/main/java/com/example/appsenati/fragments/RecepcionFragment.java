@@ -36,7 +36,7 @@ public class RecepcionFragment extends Fragment {
     RequestQueue requestQueue;
     String condicion = "", tipo = "";
 
-    private final String endPoint = "http://192.168.18.186:3000/api/herramientas/";
+    private final String endPoint = "http://192.168.101.33:3000/api/herramientas/";
 
     public RecepcionFragment() {}
 
